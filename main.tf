@@ -1,7 +1,12 @@
+# provider "aws" {
+#     region = "${var.region}"
+#     access_key = "${var.access_key}"
+#     secret_key = "${var.secret_key}"
+# }
 provider "aws" {
     region = "${var.region}"
-    access_key = "${var.access_key}"
-    secret_key = "${var.secret_key}"
+    access_key = "AKIAJXI3U4C3NBAHB2FA"
+    secret_key = "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"
 }
 terraform {
     backend "s3" {
