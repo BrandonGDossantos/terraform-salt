@@ -10,16 +10,15 @@ resource "aws_instance" "saltmaster" {
         volume_type = "gp2"
         volume_size = 64
     }
-    # provisioner "remote-exec" {
-    #     inline = [
-    #     "git clone https://github.com/BrandonGDossantos/t-pot-autoinstall.git",
-    #     "cd t-pot-autoinstall/",
-    #     "sudo ./install.sh ubuntu 2 sundown"
-    #     ]
-    #     connection {
-    #         agent = true
-    #         type = "ssh"
-    #         user = "ubuntu"
-    #     }
-    # }
+    provisioner "remote-exec" {
+        inline = [
+        "sudo apt-get install salt-master", 
+        "sudo salt-master --log-file=/var/log/salt/master"
+        ]
+        connection {
+            agent = true
+            type = "ssh"
+            user = "ubuntu"
+        }
+    }
 }
