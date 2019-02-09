@@ -15,3 +15,12 @@ variable "key_name" {
 variable "security_group_id" {
     default = "sg-055d40e8d83adc2e1"
 }
+
+variable "vpc_id" {
+    default = "vpc-30fa5d4a"
+  
+}
+
+variable "saltdns" {
+    default = "salt.cptc.com"
+}

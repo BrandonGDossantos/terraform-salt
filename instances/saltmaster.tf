@@ -2,6 +2,7 @@ resource "aws_instance" "saltmaster" {
     tags {
         Name = "Salt Master"
     }
+    private_dns = "${var.saltdns}"
     ami = "${lookup(var.amis, var.region)}"
     instance_type = "${var.instance_type}"
     key_name = "${var.key_name}"
@@ -10,11 +11,11 @@ resource "aws_instance" "saltmaster" {
         volume_type = "gp2"
         volume_size = 64
     }
+   
     provisioner "remote-exec" {
         inline = [
         "sudo apt-get update",
-        "sudo apt-get install salt-master -y", 
-        "sudo salt-master --log-file=/var/log/salt/master"
+        "sudo apt-get install salt-master -y"
         ]
         connection {
             agent = true
