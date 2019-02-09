@@ -12,6 +12,7 @@ resource "aws_instance" "saltmaster" {
     }
     provisioner "remote-exec" {
         inline = [
+        "sudo apt-get update && sudo apt-get dist-upgrade",
         "sudo apt-get install salt-master", 
         "sudo salt-master --log-file=/var/log/salt/master"
         ]
