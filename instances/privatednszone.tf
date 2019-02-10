@@ -13,6 +13,6 @@ resource "aws_route53_record" "salt" {
   ttl = "300"
 
   records = [
-    "10.0.0.1"
+    "10.0.1.10"
   ]
 }
