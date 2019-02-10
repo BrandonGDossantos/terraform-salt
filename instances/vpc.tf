@@ -72,13 +72,13 @@ resource "aws_internet_gateway" "default" {
 /*
   Private Subnet
 */
-# resource "aws_subnet" "us-east-1b-private" {
-#     vpc_id = "${aws_vpc.default.id}"
+resource "aws_subnet" "us-east-1b-private" {
+    vpc_id = "${aws_vpc.default.id}"
 
-#     cidr_block = "${var.private_subnet_cidr}"
-#     availability_zone = "us-east-1b"
+    cidr_block = "${var.private_subnet_cidr}"
+    availability_zone = "us-east-1b"
 
-#     tags {
-#         Name = "Private Subnet"
-#     }
-# }
+    tags {
+        Name = "Private Subnet"
+    }
+}
