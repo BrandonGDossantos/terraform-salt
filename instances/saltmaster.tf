@@ -42,7 +42,8 @@ resource "aws_instance" "saltmaster" {
     ami = "${lookup(var.amis, var.region)}"
     instance_type = "${var.instance_type}"
     key_name = "${var.key_name}"
-    private_ip = "10.0.0.1"
+    subnet_id = "${aws_subnet.us-east-1b-private.id}"
+    private_ip = "10.0.1.1"
     root_block_device {
         volume_type = "gp2"
         volume_size = 64

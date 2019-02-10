@@ -9,6 +9,19 @@ resource "aws_internet_gateway" "default" {
     vpc_id = "${aws_vpc.default.id}"
 }
 
+/*
+  Private Subnet
+*/
+resource "aws_subnet" "us-east-1b-private" {
+    vpc_id = "${aws_vpc.default.id}"
+
+    cidr_block = "${var.private_subnet_cidr}"
+    availability_zone = "us-east-1b"
+
+    tags {
+        Name = "Private Subnet"
+    }
+}
 # resource "aws_security_group" "nat" {
 #     name = "vpc_nat"
 #     description = "Allow traffic to pass from the private subnet to the internet"
@@ -69,16 +82,3 @@ resource "aws_internet_gateway" "default" {
 #         Name = "NATSG"
 #     }
 # }
-/*
-  Private Subnet
-*/
-resource "aws_subnet" "us-east-1b-private" {
-    vpc_id = "${aws_vpc.default.id}"
-
-    cidr_block = "${var.private_subnet_cidr}"
-    availability_zone = "us-east-1b"
-
-    tags {
-        Name = "Private Subnet"
-    }
-}
