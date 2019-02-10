@@ -18,6 +18,9 @@ variable "vpc_cidr" {
 }
 
 variable "private_subnet_cidr" {
-    default = "10.0.0.0/24"
+    default = "10.0.1.0/24"
 }
 
+variable "salt_master_private" {
+    default = "10.0.1.10"
+}

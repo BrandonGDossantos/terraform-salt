@@ -42,9 +42,10 @@ resource "aws_instance" "saltmaster" {
     ami = "${lookup(var.amis, var.region)}"
     instance_type = "${var.instance_type}"
     key_name = "${var.key_name}"
-    subnet_id = "${aws_subnet.us-east-1b-private.id}"
+    # subnet_id = "${aws_subnet.us-east-1b-private.id}"
+    subnet_id = "subnet-0ea0a03d7c35eb2a9"
     vpc_security_group_ids = ["${aws_security_group.salt.id}"]
-    private_ip = "10.0.1.10"
+    private_ip = "${var.salt_master_private}"
     root_block_device {
         volume_type = "gp2"
         volume_size = 64
