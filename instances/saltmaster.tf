@@ -42,7 +42,7 @@ resource "aws_instance" "saltmaster" {
     ami = "${lookup(var.amis, var.region)}"
     instance_type = "${var.instance_type}"
     key_name = "${var.key_name}"
-    vpc_security_group_ids = ["${var.aws_security_group.salt.id}"]
+    vpc_security_group_ids = ["${aws_security_group.salt.id}"]
     root_block_device {
         volume_type = "gp2"
         volume_size = 64
