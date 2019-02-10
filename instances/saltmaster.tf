@@ -1,12 +1,48 @@
+resource "aws_security_group" "salt" {
+    name = "salt"
+    description = "Allow salt protocol."
+
+    ingress { 
+        from_port = 4505
+        to_port = 4505
+        protocol = "tcp"
+        security_groups = ["${aws_security_group.web.id}"]
+    }
+    ingress { 
+        from_port = 4506
+        to_port = 4506
+        protocol = "tcp"
+        security_groups = ["${aws_security_group.web.id}"]
+    }
+
+    egress {
+        from_port = 80
+        to_port = 80
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    egress {
+        from_port = 443
+        to_port = 443
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    vpc_id = "${aws_vpc.default.id}"
+
+    tags {
+        Name = "SaltSG"
+    }
+}
+
 resource "aws_instance" "saltmaster" {
     tags {
         Name = "Salt Master"
     }
-    private_dns = "${var.saltdns}"
     ami = "${lookup(var.amis, var.region)}"
     instance_type = "${var.instance_type}"
     key_name = "${var.key_name}"
-    vpc_security_group_ids = ["${var.security_group_id}"]
+    vpc_security_group_ids = ["${var.aws_security_group.salt.id}"]
     root_block_device {
         volume_type = "gp2"
         volume_size = 64

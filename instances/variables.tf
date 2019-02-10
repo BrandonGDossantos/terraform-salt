@@ -12,15 +12,12 @@ variable "amis" {
 variable "key_name" {
     default = "AWS Key"
 }
-variable "security_group_id" {
-    default = "sg-055d40e8d83adc2e1"
+
+variable "vpc_cidr" {
+    default = "10.0.0.0/16"
 }
 
-variable "vpc_id" {
-    default = "vpc-30fa5d4a"
-  
+variable "private_subnet_cidr" {
+    default = "10.0.1.0/24"
 }
 
-variable "saltdns" {
-    default = "salt.cptc.com"
-}
