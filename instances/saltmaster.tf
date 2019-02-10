@@ -1,39 +1,39 @@
-# resource "aws_security_group" "salt" {
-#     name = "salt"
-#     description = "Allow salt protocol."
+resource "aws_security_group" "salt" {
+    name = "salt"
+    description = "Allow salt protocol."
 
-#     ingress { 
-#         from_port = 4505
-#         to_port = 4505
-#         protocol = "tcp"
-#         cidr_blocks = ["0.0.0.0/0"]
-#     }
-#     ingress { 
-#         from_port = 4506
-#         to_port = 4506
-#         protocol = "tcp"
-#         cidr_blocks = ["0.0.0.0/0"]
-#     }
+    ingress { 
+        from_port = 4505
+        to_port = 4505
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    ingress { 
+        from_port = 4506
+        to_port = 4506
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
 
-#     egress {
-#         from_port = 80
-#         to_port = 80
-#         protocol = "tcp"
-#         cidr_blocks = ["0.0.0.0/0"]
-#     }
-#     egress {
-#         from_port = 443
-#         to_port = 443
-#         protocol = "tcp"
-#         cidr_blocks = ["0.0.0.0/0"]
-#     }
+    egress {
+        from_port = 80
+        to_port = 80
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    egress {
+        from_port = 443
+        to_port = 443
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
 
-#     vpc_id = "${aws_vpc.default.id}"
+    vpc_id = "${aws_vpc.default.id}"
 
-#     tags {
-#         Name = "SaltSG"
-#     }
-# }
+    tags {
+        Name = "SaltSG"
+    }
+}
 
 resource "aws_instance" "saltmaster" {
     tags {
@@ -43,6 +43,7 @@ resource "aws_instance" "saltmaster" {
     instance_type = "${var.instance_type}"
     key_name = "${var.key_name}"
     subnet_id = "${aws_subnet.us-east-1b-private.id}"
+    vpc_security_group_ids = "${aws_security_group.salt.id}"
     private_ip = "10.0.1.10"
     root_block_device {
         volume_type = "gp2"
