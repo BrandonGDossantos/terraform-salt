@@ -16,8 +16,8 @@ resource "aws_instance" "saltmaster" {
    
     provisioner "remote-exec" {
         inline = [
-        "sudo apt-get update",
-        "sudo apt-get install salt-master -y"
+        "sudo curl -o bootstrap-salt.sh -L https://bootstrap.saltstack.com",
+        "sudo sh bootstrap-salt.sh -M -N git develop"
         ]
         connection {
             agent = true
