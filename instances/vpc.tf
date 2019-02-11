@@ -49,7 +49,7 @@ resource "aws_security_group" "allow_ssh" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["66.24.204.9/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -106,7 +106,7 @@ resource "aws_security_group" "allow_winrm" {
     from_port   = 5985
     to_port     = 5986
     protocol    = "tcp"
-    cidr_blocks = ["66.24.204.9/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags {
