@@ -79,3 +79,20 @@ resource "aws_security_group" "allow_salt" {
     Name = "allow_salt_sg"
   }
 }
+
+resource "aws_security_group" "allow_icmp" {
+  name        = "allow_icmp_sg"
+  description = "Allow ICMP"
+  vpc_id = "${aws_vpc.default.id}"
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "icmp"
+    cidr_blocks = ["10.0.0.0/24"]
+  }
+
+  tags {
+    Name = "allow_icmp_sg"
+  }
+}
