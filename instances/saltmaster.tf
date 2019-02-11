@@ -2,8 +2,8 @@ resource "aws_instance" "saltmaster" {
     tags {
         Name = "Salt Master"
     }
-    ami = "${lookup(var.amis, var.region)}"
-    instance_type = "${var.instance_type}"
+    ami = "${lookup(var.amis, "linux")}"
+    instance_type = "${lookup(var.instance_type, "linux")}"
     key_name = "${var.key_name}"
     subnet_id = "${aws_subnet.public.id}"
     associate_public_ip_address = true
