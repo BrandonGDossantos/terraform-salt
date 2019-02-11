@@ -34,9 +34,9 @@ jobs:
       - run:
           name: Deploy full environment
           command: terraform apply -input=false tfplan
-      - run:
-          name: Taint Terraform
-          command: terraform taint -module='instances' 'aws_instance.saltmaster'
+      # - run:
+      #     name: Taint Terraform
+      #     command: terraform taint -module='instances' 'aws_instance.saltmaster'
 
 workflows:
   version: 2
