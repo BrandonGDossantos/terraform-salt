@@ -9,6 +9,7 @@ resource "aws_instance" "saltminion" {
     associate_public_ip_address = true
     vpc_security_group_ids = [
         "${aws_security_group.allow_ssh.id}",
+        "${aws_security_group.allow_salt.id}",
         "${aws_security_group.allow_icmp.id}"
         ]
     private_ip = "${var.salt_minion_private}"
