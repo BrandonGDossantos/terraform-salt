@@ -86,8 +86,8 @@ resource "aws_security_group" "allow_icmp" {
   vpc_id = "${aws_vpc.default.id}"
 
   ingress {
-    from_port   = 0
-    to_port     = 0
+    from_port   = -1
+    to_port     = -1
     protocol    = "icmp"
     cidr_blocks = ["10.0.0.0/24"]
   }
