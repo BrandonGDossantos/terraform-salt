@@ -43,8 +43,8 @@ provisioner "file" {
     connection {
         type = "winrm"
         timeout = "10m"
-        user = "${var.INSTANCE_USERNAME}"
-        password = "${var.INSTANCE_PASSWORD}"
+        user = "${var.instance_username}"
+        password = "${var.instance_password}"
     }
 }
 

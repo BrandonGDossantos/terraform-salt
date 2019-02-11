@@ -32,7 +32,9 @@ variable "salt_master_private" {
 variable "salt_minion_linux_private" {
     default = "10.0.0.10"
 }
-
+variable "salt_minion_windows_private" {
+    default = "10.0.0.11"
+}
 variable "instance_username" {
     default = "testuser"
 }
