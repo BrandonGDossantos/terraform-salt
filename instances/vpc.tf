@@ -49,7 +49,7 @@ resource "aws_security_group" "allow_ssh" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["66.24.204.9/32"]
   }
 
   egress {
@@ -90,6 +90,23 @@ resource "aws_security_group" "allow_icmp" {
     to_port     = -1
     protocol    = "icmp"
     cidr_blocks = ["10.0.0.0/24"]
+  }
+
+  tags {
+    Name = "allow_icmp_sg"
+  }
+}
+
+resource "aws_security_group" "allow_winrm" {
+  name        = "allow_winrm_sg"
+  description = "Allow WinRM"
+  vpc_id = "${aws_vpc.default.id}"
+
+  ingress {
+    from_port   = 5985
+    to_port     = 5986
+    protocol    = "tcp"
+    cidr_blocks = ["66.24.204.9/32"]
   }
 
   tags {
