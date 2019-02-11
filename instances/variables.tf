@@ -4,7 +4,7 @@ variable "region" {
 variable "instance_type" {
     default = {
         linux = "t3.medium",
-        windows = "t3.large"
+        windows = "t3.xlarge"
     }
 }
 variable "amis" {
