@@ -40,7 +40,7 @@ resource "aws_route_table" "default_us_east_1b_public" {
 
 resource "aws_route_table_association" "default_us_east_1a_public" {
     subnet_id = "${aws_subnet.public.id}"
-    route_table_id = "${aws_route_table.my_vpc_us_east_1a_public.id}"
+    route_table_id = "${aws_route_table.default_us_east_1b_public.id}"
 }
 /*
   Private Subnet
