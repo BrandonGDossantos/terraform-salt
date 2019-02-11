@@ -36,10 +36,10 @@ variable "salt_minion_windows_private" {
     default = "10.0.0.11"
 }
 variable "instance_username" {
-    default = "testuser"
+    default = "Administrator"
 }
 
 variable "instance_password" {
-    default = "testpassword"
+    default = "C3NZ(&srD-K"
 }
 
