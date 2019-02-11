@@ -1,45 +1,3 @@
-# resource "aws_security_group" "salt_security_group" {
-#     name = "salt"
-#     description = "Allow salt protocol."
-
-#     ingress { 
-#         from_port = 22
-#         to_port = 22
-#         protocol = "tcp"
-#         cidr_blocks = ["0.0.0.0/0"]
-#     }
-#     ingress { 
-#         from_port = 4505
-#         to_port = 4505
-#         protocol = "tcp"
-#         cidr_blocks = ["0.0.0.0/0"]
-#     }
-#     ingress { 
-#         from_port = 4506
-#         to_port = 4506
-#         protocol = "tcp"
-#         cidr_blocks = ["0.0.0.0/0"]
-#     }
-#     egress {
-#         from_port = 80
-#         to_port = 80
-#         protocol = "tcp"
-#         cidr_blocks = ["0.0.0.0/0"]
-#     }
-#     egress {
-#         from_port = 443
-#         to_port = 443
-#         protocol = "tcp"
-#         cidr_blocks = ["0.0.0.0/0"]
-#     }
-
-#     vpc_id = "${aws_vpc.default.id}"
-
-#     tags {
-#         Name = "SaltSG"
-#     }
-# }
-
 resource "aws_instance" "saltmaster" {
     tags {
         Name = "Salt Master"
@@ -47,9 +5,9 @@ resource "aws_instance" "saltmaster" {
     ami = "${lookup(var.amis, var.region)}"
     instance_type = "${var.instance_type}"
     key_name = "${var.key_name}"
-    subnet_id = "${aws_subnet.us-east-1b-private.id}"
+    subnet_id = "${aws_subnet.public.id}"
     associate_public_ip_address = true
-    # vpc_security_group_ids = ["${aws_security_group.salt_security_group.id}"]
+    vpc_security_group_ids = ["${aws_security_group.allow_ssh.id}"]
     private_ip = "${var.salt_master_private}"
     root_block_device {
         volume_type = "gp2"
@@ -67,4 +25,27 @@ resource "aws_instance" "saltmaster" {
             user = "ubuntu"
         }
     }
+}
+resource "aws_security_group" "allow_ssh" {
+  name        = "allow_ssh_sg"
+  description = "Allow SSH inbound connections"
+  vpc_id = "${aws_vpc.default.id}"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks     = ["0.0.0.0/0"]
+  }
+
+  tags {
+    Name = "allow_ssh_sg"
+  }
 }
