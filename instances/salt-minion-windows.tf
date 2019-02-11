@@ -47,8 +47,4 @@ provisioner "file" {
         password = "${var.instance_password}"
     }
 }
-
-output "ip" {
-    value = "${aws_instance.salt_minion_windows.public_ip}"
-}
 }
