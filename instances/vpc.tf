@@ -63,3 +63,19 @@ resource "aws_security_group" "allow_ssh" {
     Name = "allow_ssh_sg"
   }
 }
+resource "aws_security_group" "allow_salt" {
+  name        = "allow_salt_sg"
+  description = "Allow Salt ports"
+  vpc_id = "${aws_vpc.default.id}"
+
+  ingress {
+    from_port   = 4505
+    to_port     = 4506
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/24"]
+  }
+
+  tags {
+    Name = "allow_salt_sg"
+  }
+}
