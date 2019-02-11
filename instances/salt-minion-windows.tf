@@ -37,19 +37,18 @@ net start winrm
 </powershell>
 EOF
 
-    provisioner “file” {
-        source = “test.txt”
-        destination = “C:/test.txt”
-    }
-
+provisioner "file" {
+    source = "test.txt"
+    destination = "C:/test.txt"
     connection {
-        type = “winrm”
-        timeout = “10m”
-        user = “${var.INSTANCE_USERNAME}”
-        password = “${var.INSTANCE_PASSWORD}”
+        type = "winrm"
+        timeout = "10m"
+        user = "${var.INSTANCE_USERNAME}"
+        password = "${var.INSTANCE_PASSWORD}"
     }
+}
 
-    output “ip” {
-        value=”${aws_instance.win-example.public_ip}”
-    }
+output "ip" {
+    value = "${aws_instance.salt_minion_windows.public_ip}"
+}
 }
