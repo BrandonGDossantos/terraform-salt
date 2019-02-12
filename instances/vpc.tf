@@ -110,6 +110,6 @@ resource "aws_security_group" "allow_winrm" {
   }
 
   tags {
-    Name = "allow_icmp_sg"
+    Name = "allow_winrm_sg"
   }
 }

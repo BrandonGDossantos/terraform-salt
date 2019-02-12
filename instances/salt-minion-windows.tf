@@ -17,25 +17,25 @@ resource "aws_instance" "salt_minion_windows" {
         volume_type = "gp2"
         volume_size = 64
     }
-    user_data = <<EOF
-<powershell>
-net user ${var.instance_username} ‘${var.instance_password}’ /add /y
-net localgroup administrators ${var.instance_password} /add
+#     user_data = <<EOF
+# <powershell>
+# net user ${var.instance_username} ‘${var.instance_password}’ /add /y
+# net localgroup administrators ${var.instance_password} /add
 
-winrm quickconfig -q
-winrm set winrm/config/winrs ‘@{MaxMemoryPerShellMB=”300″}’
-winrm set winrm/config ‘@{MaxTimeoutms=”1800000″}’
-winrm set winrm/config/service ‘@{AllowUnencrypted=”true”}’
-winrm set winrm/config/service/auth ‘@{Basic=”true”}’
+# winrm quickconfig -q
+# winrm set winrm/config/winrs ‘@{MaxMemoryPerShellMB=”300″}’
+# winrm set winrm/config ‘@{MaxTimeoutms=”1800000″}’
+# winrm set winrm/config/service ‘@{AllowUnencrypted=”true”}’
+# winrm set winrm/config/service/auth ‘@{Basic=”true”}’
 
-netsh advfirewall firewall add rule name=”WinRM 5985″ protocol=TCP dir=in localport=5985 action=allow
-netsh advfirewall firewall add rule name=”WinRM 5986″ protocol=TCP dir=in localport=5986 action=allow
+# netsh advfirewall firewall add rule name=”WinRM 5985″ protocol=TCP dir=in localport=5985 action=allow
+# netsh advfirewall firewall add rule name=”WinRM 5986″ protocol=TCP dir=in localport=5986 action=allow
 
-net stop winrm
-sc.exe config winrm start=auto
-net start winrm
-</powershell>
-EOF
+# net stop winrm
+# sc.exe config winrm start=auto
+# net start winrm
+# </powershell>
+# EOF
 
 provisioner "file" {
     source = "test.txt"
