@@ -7,11 +7,11 @@ resource "aws_instance" "salt_minion_windows" {
     key_name = "${var.key_name}"
     subnet_id = "${aws_subnet.public.id}"
     associate_public_ip_address = true
-    vpc_security_group_ids = [
-        "${aws_security_group.allow_winrm.id}",
-        "${aws_security_group.allow_salt.id}",
-        "${aws_security_group.allow_icmp.id}"
-        ]
+    # vpc_security_group_ids = [
+    #     "${aws_security_group.allow_winrm.id}",
+    #     "${aws_security_group.allow_salt.id}",
+    #     "${aws_security_group.allow_icmp.id}"
+    #     ]
     private_ip = "${var.salt_minion_windows_private}"
     root_block_device {
         volume_type = "gp2"
@@ -42,7 +42,7 @@ provisioner "file" {
     destination = "C:/test.txt"
     connection {
         type = "winrm"
-        timeout = "10m"
+        timeout = "3m"
         user = "${var.instance_username}"
         password = "${var.instance_password}"
     }
