@@ -7,11 +7,12 @@ resource "aws_instance" "salt_minion_windows" {
     key_name = "${var.key_name}"
     subnet_id = "${aws_subnet.public.id}"
     associate_public_ip_address = true
-    # vpc_security_group_ids = [
-    #     "${aws_security_group.allow_winrm.id}",
-    #     "${aws_security_group.allow_salt.id}",
-    #     "${aws_security_group.allow_icmp.id}"
-    #     ]
+    vpc_security_group_ids = [
+        "${aws_security_group.allow_winrm.id}",
+        "${aws_security_group.allow_salt.id}",
+        "${aws_security_group.allow_icmp.id}",
+        "${aws_security_group.allow_rdp.id}"
+        ]
     private_ip = "${var.salt_minion_windows_private}"
     root_block_device {
         volume_type = "gp2"
@@ -19,8 +20,10 @@ resource "aws_instance" "salt_minion_windows" {
     }
     user_data = <<EOF
 <powershell>
-net user Administrator SuperS3cr3t!
-wmic useraccount where "name='Administrator'" set PasswordExpires=FALSE
+$admin = [adsi]("WinNT://./administrator, user")
+$admin.psbase.invoke("SetPassword", "${var.instance_password}")
+# net user Administrator "${var.instance_password}"
+# wmic useraccount where "name='Administrator'" set PasswordExpires=FALSE
 
 netsh advfirewall firewall set rule name="Windows Remote Management (HTTP-In)" new enable=yes action=block
 
@@ -52,8 +55,7 @@ provisioner "file" {
     connection {
         type = "winrm"
         timeout = "20m"
-        https = false
-        insecure = true
+        https = true
         user = "${var.instance_username}"
         password = "${var.instance_password}"
     }
