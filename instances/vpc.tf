@@ -122,7 +122,10 @@ resource "aws_security_group" "allow_winrm" {
 
 resource "aws_security_group" "allow_rdp" {
   name        = "RDP"
-
+  name        = "allow_rdp_sg"
+  description = "Allow RDP"
+  vpc_id = "${aws_vpc.default.id}"
+  
   # RDP access from anywhere
   ingress {
     from_port   = 3389
