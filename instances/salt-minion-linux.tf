@@ -17,7 +17,11 @@ resource "aws_instance" "salt_minion_linux" {
         volume_type = "gp2"
         volume_size = 64
     }
-   
+    connection {
+    agent = true
+    type = "ssh"
+    user = "ubuntu"
+    }
     provisioner "file" {
         source = "instances/hosts"
         destination = "/etc/hosts"
@@ -33,10 +37,5 @@ resource "aws_instance" "salt_minion_linux" {
         "sudo curl -o bootstrap-salt.sh -L https://bootstrap.saltstack.com",
         "sudo sh bootstrap-salt.sh git develop"
         ]
-        connection {
-            agent = true
-            type = "ssh"
-            user = "ubuntu"
-        }
     }
 }
