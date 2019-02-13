@@ -19,21 +19,30 @@ resource "aws_instance" "salt_minion_windows" {
     }
     user_data = <<EOF
 <powershell>
-net user ${var.instance_username} ‘${var.instance_password}’ /add /y
-net localgroup administrators ${var.instance_password} /add
+net user Administrator SuperS3cr3t!
+wmic useraccount where "name='Administrator'" set PasswordExpires=FALSE
 
-winrm quickconfig -q
-winrm set winrm/config/winrs ‘@{MaxMemoryPerShellMB=”300″}’
-winrm set winrm/config ‘@{MaxTimeoutms=”1800000″}’
-winrm set winrm/config/service ‘@{AllowUnencrypted=”true”}’
-winrm set winrm/config/service/auth ‘@{Basic=”true”}’
+netsh advfirewall firewall set rule name="Windows Remote Management (HTTP-In)" new enable=yes action=block
 
-netsh advfirewall firewall add rule name=”WinRM 5985″ protocol=TCP dir=in localport=5985 action=allow
-netsh advfirewall firewall add rule name=”WinRM 5986″ protocol=TCP dir=in localport=5986 action=allow
+winrm delete winrm/config/listener?Address=*+Transport=HTTP  2>$Null
+winrm delete winrm/config/listener?Address=*+Transport=HTTPS 2>$Null
 
-net stop winrm
-sc.exe config winrm start=auto
-net start winrm
+winrm create winrm/config/listener?Address=*+Transport=HTTP
+winrm set winrm/config/winrs '@{MaxMemoryPerShellMB="0"}'
+winrm set winrm/config '@{MaxTimeoutms="7200000"}'
+winrm set winrm/config/service '@{AllowUnencrypted="true"}'
+winrm set winrm/config/service '@{MaxConcurrentOperationsPerUser="12000"}'
+winrm set winrm/config/service/auth '@{Basic="true"}'
+winrm set winrm/config/client/auth '@{Basic="true"}'
+
+$Key = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System'
+$Setting = 'LocalAccountTokenFilterPolicy'
+Set-ItemProperty -Path $Key -Name $Setting -Value 1 -Force
+
+Stop-Service -Name WinRM
+Set-Service -Name WinRM -StartupType Automatic
+netsh advfirewall firewall set rule name="Windows Remote Management (HTTP-In)" new action=allow localip=any remoteip=any
+Start-Service -Name WinRM
 </powershell>
 EOF
 
