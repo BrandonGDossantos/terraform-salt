@@ -25,15 +25,15 @@ curl -OutFile bootstrap-salt.ps1 https://raw.githubusercontent.com/saltstack/sal
 </powershell>
 EOF
 
-provisioner "file" {
-    source = "instances/hosts"
-    destination = "C:/Windows/System32/drivers/etc/hosts"
-    connection {
-        type = "winrm"
-        timeout = "20m"
-        https = false
-        user = "${var.instance_username}"
-        password = "${var.instance_password}"
+    provisioner "file" {
+        source = "instances/hosts"
+        destination = "C:/Windows/System32/drivers/etc/hosts"
+        connection {
+            type = "winrm"
+            timeout = "20m"
+            https = false
+            user = "${var.instance_username}"
+            password = "${var.instance_password}"
+        }
     }
-}
 }
