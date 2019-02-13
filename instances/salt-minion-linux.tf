@@ -22,18 +22,10 @@ resource "aws_instance" "salt_minion_linux" {
     type = "ssh"
     user = "ubuntu"
     }
-    provisioner "file" {
-        source = "instances/hosts"
-        destination = "/etc/hosts"
-        connection {
-            agent = true
-            type = "ssh"
-            user = "ubuntu"
-        }
-    }
 
     provisioner "remote-exec" {
         inline = [
+        "sudo echo 'salt.cptc.com salt' >> /etc/hosts"
         "sudo curl -o bootstrap-salt.sh -L https://bootstrap.saltstack.com",
         "sudo sh bootstrap-salt.sh git develop"
         ]

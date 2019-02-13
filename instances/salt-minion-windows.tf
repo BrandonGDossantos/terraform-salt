@@ -20,6 +20,7 @@ resource "aws_instance" "salt_minion_windows" {
     }
     user_data = <<EOF
 <powershell>
+Add-Content -Path C:/Windows/System32/drivers/etc/hosts -Value 'salt.cptc.com salt'
 curl -OutFile bootstrap-salt.ps1 https://raw.githubusercontent.com/saltstack/salt-bootstrap/develop/bootstrap-salt.ps1
 ./bootstrap-salt.ps1 -master salt.cptc.com
 </powershell>
@@ -31,9 +32,9 @@ EOF
         user = "${var.instance_username}"
         password = "${var.instance_password}"
     }
-    provisioner "file" {
-        source = "instances/hosts"
-        destination = "C:/Windows/System32/drivers/etc/hosts"
+    # provisioner "file" {
+    #     source = "instances/hosts"
+    #     destination = "C:/Windows/System32/drivers/etc/hosts"
 
-    }
+    # }
 }
