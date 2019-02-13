@@ -25,7 +25,7 @@ resource "aws_instance" "salt_minion_linux" {
 
     provisioner "remote-exec" {
         inline = [
-        "sudo echo 'salt.cptc.com salt' >> /etc/hosts"
+        "sudo echo 'salt.cptc.com salt' >> /etc/hosts",
         "sudo curl -o bootstrap-salt.sh -L https://bootstrap.saltstack.com",
         "sudo sh bootstrap-salt.sh git develop"
         ]
