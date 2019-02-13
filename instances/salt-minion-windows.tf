@@ -55,7 +55,7 @@ provisioner "file" {
     connection {
         type = "winrm"
         timeout = "20m"
-        https = true
+        https = false
         user = "${var.instance_username}"
         password = "${var.instance_password}"
     }
