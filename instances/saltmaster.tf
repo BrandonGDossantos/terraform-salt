@@ -17,11 +17,16 @@ resource "aws_instance" "saltmaster" {
         volume_type = "gp2"
         volume_size = 64
     }
+    depends_on = [
+        "${aws_instance.salt_minion_linux}",
+        "${aws_instance.salt_minion_windows}"
+    ]
    
     provisioner "remote-exec" {
         inline = [
         "sudo curl -o bootstrap-salt.sh -L https://bootstrap.saltstack.com",
-        "sudo sh bootstrap-salt.sh -M -N git develop"
+        "sudo sh bootstrap-salt.sh -M -N git develop",
+        "sudo salt-key -A"
         ]
         connection {
             agent = true

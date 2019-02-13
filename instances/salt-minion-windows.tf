@@ -20,44 +20,20 @@ resource "aws_instance" "salt_minion_windows" {
     }
     user_data = <<EOF
 <powershell>
-$admin = [adsi]("WinNT://./administrator, user")
-$admin.psbase.invoke("SetPassword", "${var.instance_password}")
-# net user Administrator "${var.instance_password}"
-# wmic useraccount where "name='Administrator'" set PasswordExpires=FALSE
-
-netsh advfirewall firewall set rule name="Windows Remote Management (HTTP-In)" new enable=yes action=block
-
-winrm delete winrm/config/listener?Address=*+Transport=HTTP  2>$Null
-winrm delete winrm/config/listener?Address=*+Transport=HTTPS 2>$Null
-
-winrm create winrm/config/listener?Address=*+Transport=HTTP
-winrm set winrm/config/winrs '@{MaxMemoryPerShellMB="0"}'
-winrm set winrm/config '@{MaxTimeoutms="7200000"}'
-winrm set winrm/config/service '@{AllowUnencrypted="true"}'
-winrm set winrm/config/service '@{MaxConcurrentOperationsPerUser="12000"}'
-winrm set winrm/config/service/auth '@{Basic="true"}'
-winrm set winrm/config/client/auth '@{Basic="true"}'
-
-$Key = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System'
-$Setting = 'LocalAccountTokenFilterPolicy'
-Set-ItemProperty -Path $Key -Name $Setting -Value 1 -Force
-
-Stop-Service -Name WinRM
-Set-Service -Name WinRM -StartupType Automatic
-netsh advfirewall firewall set rule name="Windows Remote Management (HTTP-In)" new action=allow localip=any remoteip=any
-Start-Service -Name WinRM
+curl -OutFile bootstrap-salt.ps1 https://raw.githubusercontent.com/saltstack/salt-bootstrap/develop/bootstrap-salt.ps1
+./bootstrap-salt.ps1 -master salt.cptc.com
 </powershell>
 EOF
 
-provisioner "file" {
-    source = "instances/test.txt"
-    destination = "C:/test.txt"
-    connection {
-        type = "winrm"
-        timeout = "20m"
-        https = false
-        user = "${var.instance_username}"
-        password = "${var.instance_password}"
-    }
-}
+# provisioner "file" {
+#     source = "instances/minion-config"
+#     destination = "C:/salt/conf/minion"
+#     connection {
+#         type = "winrm"
+#         timeout = "20m"
+#         https = false
+#         user = "${var.instance_username}"
+#         password = "${var.instance_password}"
+#     }
+# }
 }
