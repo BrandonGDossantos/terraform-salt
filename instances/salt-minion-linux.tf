@@ -20,8 +20,8 @@ resource "aws_instance" "salt_minion_linux" {
    
     provisioner "remote-exec" {
         inline = [
-        "env BS_SALT_MASTER_ADDRESS = salt.cptc.com",
-        "curl -o bootstrap-salt.sh -L https://bootstrap.saltstack.com",
+        "sudo env BS_SALT_MASTER_ADDRESS=salt.cptc.com",
+        "sudo curl -o bootstrap-salt.sh -L https://bootstrap.saltstack.com",
         "sudo sh bootstrap-salt.sh git develop"
         ]
         connection {
