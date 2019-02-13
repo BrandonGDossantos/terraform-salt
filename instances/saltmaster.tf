@@ -18,8 +18,8 @@ resource "aws_instance" "saltmaster" {
         volume_size = 64
     }
     depends_on = [
-        "${aws_instance.salt_minion_linux}",
-        "${aws_instance.salt_minion_windows}"
+        "aws_instance.salt_minion_linux",
+        "aws_instance.salt_minion_windows"
     ]
    
     provisioner "remote-exec" {
