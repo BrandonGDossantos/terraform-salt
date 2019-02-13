@@ -50,7 +50,7 @@ Start-Service -Name WinRM
 EOF
 
 provisioner "file" {
-    source = "test.txt"
+    source = "instances/test.txt"
     destination = "C:/test.txt"
     connection {
         type = "winrm"
