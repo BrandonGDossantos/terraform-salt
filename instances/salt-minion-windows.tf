@@ -51,9 +51,10 @@ provisioner "file" {
     destination = "C:/test.txt"
     connection {
         type = "winrm"
-        timeout = "3m"
-        user = "${var.instance_username}"
-        password = "${var.instance_password}"
+        timeout = "20m"
+        https = false
+        user = "Administrator"
+        password = "SuperS3cr3t!"
     }
 }
 }
