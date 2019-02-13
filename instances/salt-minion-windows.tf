@@ -53,8 +53,9 @@ provisioner "file" {
         type = "winrm"
         timeout = "20m"
         https = false
-        user = "Administrator"
-        password = "SuperS3cr3t!"
+        insecure = true
+        user = "${var.instance_username}"
+        password = "${var.instance_password}"
     }
 }
 }
