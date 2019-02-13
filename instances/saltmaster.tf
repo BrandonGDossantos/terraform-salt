@@ -26,7 +26,8 @@ resource "aws_instance" "saltmaster" {
         inline = [
         "sudo curl -o bootstrap-salt.sh -L https://bootstrap.saltstack.com",
         "sudo sh bootstrap-salt.sh -M -N git develop",
-        "sudo salt-key -A"
+        "sudo salt-key -Ay",
+        "sudo salt '*' test.ping > pong"
         ]
         connection {
             agent = true
